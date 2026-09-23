@@ -35,7 +35,14 @@ while (running)
     {
         foreach (Book b in books)
         {
-            Console.WriteLine($"{b.Title} by {b.Author} - Borrowed: {b.IsBorrowed}");
+            if (b.IsBorrowed)
+            {
+                Console.WriteLine($"{b.Title} by {b.Author} - Borrowed by {b.BorrowedBy}");
+            }
+            else
+            {
+                Console.WriteLine($"{b.Title} by {b.Author} - Available");
+            }
         }
     }
     else if (choice == "2")
@@ -64,6 +71,9 @@ while (running)
         Console.Write("Enter the title of the book to borrow: ");
         string searchTitle = Console.ReadLine();
 
+        Console.Write("Enter your name: ");
+        string borrowerName = Console.ReadLine();
+
         Book foundBook = null;
 
         foreach (Book b in books)
@@ -80,12 +90,13 @@ while (running)
         }
         else if (foundBook.IsBorrowed)
         {
-            Console.WriteLine("Sorry, this book is already borrowed.");
+            Console.WriteLine($"Sorry, this book is already borrowed by {foundBook.BorrowedBy}.");
         }
         else
         {
             foundBook.IsBorrowed = true;
-            Console.WriteLine($"You have borrowed: {foundBook.Title}");
+            foundBook.BorrowedBy = borrowerName;
+            Console.WriteLine($"{borrowerName} has borrowed: {foundBook.Title}");
         }
     }
     else if (choice == "4")
@@ -113,8 +124,9 @@ while (running)
         }
         else
         {
+            Console.WriteLine($"{foundBook.BorrowedBy} has returned: {foundBook.Title}");
             foundBook.IsBorrowed = false;
-            Console.WriteLine($"You have returned: {foundBook.Title}");
+            foundBook.BorrowedBy = null;
         }
     }
     else if (choice == "5")
